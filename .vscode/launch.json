@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Day1",
+            "request": "launch",
+            "mainClass": "eth.sberan.Day1",
+            "projectName": "my-app"
+        },
+        {
+            "type": "java",
+            "name": "Launch Day1",
+            "request": "launch",
+            "mainClass": "com.mycompany.app.day1.Day1",
+            "projectName": "my-app"
+        },
+        {
+            "type": "java",
             "name": "Launch App",
             "request": "launch",
             "cwd": "${workspaceFolder}",
