@@ -10,6 +10,7 @@ public class Day2 {
   public static void main(String[] args) throws Exception {
     List<String> lines = Utils.readInput(Day2.class).collect(Collectors.toList());
     
+    int aim = 0;
     int horizontal = 0;
     int depth = 0;
 
@@ -19,12 +20,13 @@ public class Day2 {
       int arg = Integer.parseInt(split[1]);
       if (command.equals("forward")) {
           horizontal += arg;
+          depth = depth + aim * arg;
       }
       if (command.equals("down")) {
-          depth += arg;
+          aim += arg;
       }
       if (command.equals("up")) {
-          depth -= arg;
+          aim -= arg;
       }
       System.out.println("horizontal: " + horizontal + ", depth: " + depth);
     }
