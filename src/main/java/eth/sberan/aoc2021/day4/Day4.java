@@ -38,6 +38,9 @@ class Board {
   }
 
   void mark(int number) {
+    if (isWinner()) {
+      return;
+    }
     int rowNum = 0;
     for (List<Space> row : this.spaces) {
       int colNum = 0;
@@ -98,7 +101,7 @@ public class Day4 {
     for (Integer number: numbers) {
       for (Board board : boards) {
         board.mark(number);
-        if (board.isWinner()){
+        if (boards.stream().allMatch(b -> b.isWinner())){
           System.out.println(board + "\n");
           System.out.println(board.score());
           return;
