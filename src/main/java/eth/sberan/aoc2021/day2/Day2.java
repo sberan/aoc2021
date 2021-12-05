@@ -1,7 +1,7 @@
-package eth.sberan.day2;
+package eth.sberan.aoc2021.day2;
 
 import java.util.List;
-import eth.sberan.util.Utils;
+import eth.sberan.aoc2021.util.Utils;
 
 public class Day2 {
   public static void main(String[] args) throws Exception {

@@ -1,8 +1,8 @@
-package eth.sberan.day1;
+package eth.sberan.aoc2021.day1;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import eth.sberan.util.Utils;
+import eth.sberan.aoc2021.util.Utils;
 
 public class Day1 {
 
