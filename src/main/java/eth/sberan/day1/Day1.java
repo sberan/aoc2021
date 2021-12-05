@@ -1,12 +1,12 @@
-package eth.sberan;
+package eth.sberan.day1;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jooq.lambda.Seq;
+
+import eth.sberan.util.Utils;
 
 public class Day1 {
 
@@ -15,8 +15,7 @@ public class Day1 {
   }
 
   public static void main(String[] args) throws Exception {
-    Path inputFile = Path.of(Day1.class.getResource("input.txt").toURI());
-    Stream<Integer> measurements = Files.readAllLines(inputFile).stream()
+    Stream<Integer> measurements = Utils.readInput(Day1.class)
       .map((line) -> Integer.parseInt(line));
 
     Stream<Integer> sums = slidingWindow(measurements, 3)
