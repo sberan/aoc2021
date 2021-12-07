@@ -1,7 +1,7 @@
 package eth.sberan.aoc2021.day4;
 
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
@@ -9,30 +9,31 @@ import com.google.common.collect.Lists;
 
 import eth.sberan.aoc2021.util.Utils;
 import static java.util.stream.Collectors.toList;
+import static eth.sberan.aoc2021.util.Utils.forEachWithIndex;
 
-import java.util.AbstractMap;
 
-class Board {
-  Entry<Integer, Integer> lastMark = null;
+record Space (int value, boolean marked) {
+    
+  public Space (int value) { this(value, false); }
 
-  class Space {
-    int value;
-    boolean marked;
-
-    Space (int value) {
-      this.value = value;
-    }
-
-    @Override public String toString() {
-      String marker = this.marked ? "*" : " ";
-      return Strings.padStart(""+this.value+marker, 4, ' ');
-    }
+  @Override public String toString() {
+    String marker = this.marked ? "*" : " ";
+    return Strings.padStart(""+this.value+marker, 4, ' ');
   }
 
-  final List<List<Space>> spaces = Lists.newArrayList();
+  public Space mark() {
+    return new Space(this.value, true);
+  }
+}
+
+record Mark(int rowNum, int colNum) {}
+
+class Board {
+  private Optional<Mark> lastMark = Optional.empty();
+  private final List<List<Space>> spaces = Lists.newArrayList();
 
   void addRow(String input) {
-    spaces.add(Utils.splitInts(input, " ").stream()
+    spaces.add(Utils.splitInts(input, " ")
       .map(i -> new Space(i))
       .collect(toList()));
   }
@@ -41,38 +42,36 @@ class Board {
     if (isWinner()) {
       return;
     }
-    int rowNum = 0;
-    for (List<Space> row : this.spaces) {
-      int colNum = 0;
-      for (Space space : row) {
-        if (space.value == number) {
-          space.marked = true;
-          lastMark = new AbstractMap.SimpleEntry<>(rowNum, colNum);
+
+    forEachWithIndex(spaces, (row, rowNum) -> {
+      forEachWithIndex(row, (space, colNum) -> {
+        if (space.value() == number) {
+          row.set(colNum, space.mark());
+          lastMark = Optional.of(new Mark(rowNum, colNum));
         }
-        colNum++;
-      }
-      rowNum++;
-    }
+      });
+    });
   }
 
   boolean isWinner () {
-    if (lastMark == null) {
+    if (this.lastMark.isEmpty()) {
       return false;
     }
-    return spaces.get(lastMark.getKey()).stream().allMatch(m -> m.marked)
-      || spaces.stream().allMatch(row -> row.get(lastMark.getValue()).marked);
+    Mark lastMark = this.lastMark.get();
+    return spaces.get(lastMark.rowNum()).stream().allMatch(m -> m.marked())
+      || spaces.stream().allMatch(row -> row.get(lastMark.colNum()).marked());
   }
 
   int score () {
-    if (!isWinner()) {
+    if (!isWinner() || this.lastMark.isEmpty()) {
       return 0;
     }
-
-    int lastValue = spaces.get(lastMark.getKey()).get(lastMark.getValue()).value;
+    Mark lastMark = this.lastMark.get();
+    int lastValue = spaces.get(lastMark.rowNum()).get(lastMark.colNum()).value();
     return lastValue * spaces.stream()
       .flatMap(row -> row.stream())
-      .filter(space -> !space.marked)
-      .mapToInt(space -> space.value)
+      .filter(space -> !space.marked())
+      .mapToInt(space -> space.value())
       .sum();
   }
 
@@ -85,10 +84,10 @@ class Board {
 
 public class Day4 {
   public static void main(String[] args) throws Exception {
-    List<String> inputLines = Utils.readInput(Day4.class, "input.txt");
-    List<Integer> numbers = Utils.splitInts(inputLines.get(0), ",");
-    
+    List<String> inputLines = Utils.readInput(Day4.class, "input.txt").collect(toList());
+    List<Integer> numbers = Utils.splitInts(inputLines.get(0), ",").collect(toList());
     List<Board> boards = Lists.newArrayList();
+
     for (String line : inputLines.subList(1, inputLines.size() - 1)) {
       if (line.equals("")) {
         boards.add(new Board());

@@ -7,7 +7,7 @@ import eth.sberan.aoc2021.util.Utils;
 public class Day1 {
 
   public static void main(String[] args) throws Exception {
-    Stream<Integer> measurements = Utils.readInput(Day1.class, "input.txt").stream()
+    Stream<Integer> measurements = Utils.readInput(Day1.class, "input.txt")
       .map((line) -> Integer.parseInt(line));
 
     Stream<Integer> sums = Utils.slidingWindow(measurements, 3)

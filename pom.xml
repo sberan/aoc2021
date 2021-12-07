@@ -19,8 +19,8 @@
     </dependency>
   </dependencies>
   <properties>
-    <jdk.version>11</jdk.version>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <jdk.version>16</jdk.version>
+    <maven.compiler.source>16</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
   </properties>
 </project>

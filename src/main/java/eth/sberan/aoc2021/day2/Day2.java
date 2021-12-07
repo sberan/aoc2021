@@ -1,11 +1,14 @@
 package eth.sberan.aoc2021.day2;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import eth.sberan.aoc2021.util.Utils;
 
 public class Day2 {
   public static void main(String[] args) throws Exception {
-    List<String> lines = Utils.readInput(Day2.class, "input.txt");
+    List<String> lines = Utils.readInput(Day2.class, "input.txt")
+      .collect(Collectors.toList());
     
     int aim = 0;
     int horizontal = 0;

@@ -58,7 +58,8 @@ public class Day3 {
 
 
   public static void main(String[] args) throws Exception {
-    List<String> diagnosticReport = Utils.readInput(Day3.class, "input.txt");
+    List<String> diagnosticReport = Utils.readInput(Day3.class, "input.txt")
+      .collect(Collectors.toList());
     
     String gamma = frequencyString(diagnosticReport, CharFrequency.MAX, false);
     String epsilon = frequencyString(diagnosticReport, CharFrequency.MIN, false);
