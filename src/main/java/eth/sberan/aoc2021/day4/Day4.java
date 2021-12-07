@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import eth.sberan.aoc2021.util.Utils;
 import static java.util.stream.Collectors.toList;
+
 import static eth.sberan.aoc2021.util.Utils.forEachWithIndex;
 
 
@@ -34,7 +35,7 @@ class Board {
 
   void addRow(String input) {
     spaces.add(Utils.splitInts(input, " ")
-      .map(i -> new Space(i))
+      .mapToObj(i -> new Space(i))
       .collect(toList()));
   }
 
@@ -85,7 +86,7 @@ class Board {
 public class Day4 {
   public static void main(String[] args) throws Exception {
     List<String> inputLines = Utils.readInput(Day4.class, "input.txt").collect(toList());
-    List<Integer> numbers = Utils.splitInts(inputLines.get(0), ",").collect(toList());
+    int[] numbers = Utils.splitInts(inputLines.get(0), ",").toArray();
     List<Board> boards = Lists.newArrayList();
 
     for (String line : inputLines.subList(1, inputLines.size() - 1)) {
@@ -97,7 +98,7 @@ public class Day4 {
       }
     }
 
-    for (Integer number: numbers) {
+    for (int number: numbers) {
       for (Board board : boards) {
         board.mark(number);
         if (boards.stream().allMatch(b -> b.isWinner())){

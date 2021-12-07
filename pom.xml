@@ -17,6 +17,11 @@
       <artifactId>jool</artifactId>
       <version>0.9.14</version>
     </dependency>
+    <dependency>
+      <groupId>one.util</groupId>
+      <artifactId>streamex</artifactId>
+      <version>0.8.0</version>
+    </dependency>
   </dependencies>
   <properties>
     <jdk.version>16</jdk.version>
