@@ -1,43 +1,40 @@
 package eth.sberan.aoc2021.day6;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
+import java.math.BigInteger;
+import java.util.Map;
 
-import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 
 import eth.sberan.aoc2021.util.Utils;
 
-record LanternFish(int days) {
-  Stream<LanternFish> next () {
-    if (days == 0) {
-      return Stream.of(new LanternFish(6), new LanternFish(8));
+class Simulation {
+  static Map<Integer, BigInteger> memo = Maps.newHashMap();
+
+  static BigInteger childrenAtDays(int days) {
+    if (memo.containsKey(days)) {
+      return memo.get(days);
     }
-    return Stream.of(new LanternFish(days - 1));
-  }
-}
-record Simulation(List<LanternFish> state, int day) {
-
-  
-  static Stream<Simulation> simulate (List<LanternFish> initialState) {
-    var state = new AtomicReference<>(new Simulation(initialState, 0));
-    return Stream.generate(() -> {
-      return state.updateAndGet(curr -> curr.next());
-    });
+    var children = BigInteger.ZERO;
+    for (var d = days - 1; d >= 0; d -= 7) {
+      children = children.add(BigInteger.ONE).add(childrenAtDays(8, d));
+    }
+    memo.put(days, children);
+    return children;
   }
 
-  Simulation next () {
-    var nextState = state.stream().flatMap(f -> f.next()).toList();
-    return new Simulation(nextState, day + 1);
+  static BigInteger childrenAtDays(int startTimer, int days) {
+    if (days <= startTimer) {
+      return BigInteger.ZERO;
+    }
+    return childrenAtDays(days - startTimer);
   }
 
-  @Override public String toString () {
-    return String.format("After %s days: %s", day, state.size());
-  }
-
-  int total () {
-    return this.state.size();
+  public static BigInteger simulate(int[] initialState, int days) {
+    BigInteger children = BigInteger.ZERO;
+    for(var init : initialState) {
+      children = children.add(BigInteger.ONE).add(childrenAtDays(init, days));
+    }
+    return children;
   }
 }
 
@@ -46,13 +43,8 @@ public class Day6 {
   public static void main(String[] args) throws Exception {
     var initialState = Utils.readInput(Day6.class, "input.txt")
       .flatMapToInt(line -> Utils.splitInts(line, ","))
-      .mapToObj(timer -> new LanternFish(timer))
-      .toList();
+      .toArray();
 
-
-    Simulation.simulate(initialState).limit(80).forEach(s -> {
-      System.out.println(s);
-    });
-    
+    System.out.println(Simulation.simulate(initialState, 256));
   }
 }
