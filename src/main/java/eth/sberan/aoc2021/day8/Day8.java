@@ -1,7 +1,6 @@
 package eth.sberan.aoc2021.day8;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Splitter;
