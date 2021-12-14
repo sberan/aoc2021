@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Day10",
+            "request": "launch",
+            "mainClass": "eth.sberan.aoc2021.day10.Day10",
+            "projectName": "aoc2021"
+        },
+        {
+            "type": "java",
             "name": "Launch Day9",
             "request": "launch",
             "mainClass": "eth.sberan.aoc2021.day9.Day9",
