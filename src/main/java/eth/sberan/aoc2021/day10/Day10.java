@@ -70,13 +70,23 @@ public class Day10 {
         }
       }
     }
+    var completion = new StringBuilder();
+    while (stack.size() > 0) {
+      completion.append(stack.pop().getClose().value);
+    }
+    if (completion.length() > 0) {
+      return Optional.of(new Error(0, String.format("%s: complete by adding '%s'.", line, completion)));
+    }
     return Optional.empty();
   }
 
   public static void main(String[] args) throws Exception {
-    var input = Utils.readInput(Day10.class, "input.txt");
-    var sum = input.map(line -> parse(line))
-      .filter(Optional::isPresent).mapToInt(x -> x.get().points()).sum();
+    var input = Utils.readInput(Day10.class, "example.txt");
+    var errors = input.map(line -> parse(line))
+      .filter(Optional::isPresent).map(x -> x.get())
+      .peek(x -> System.out.println(x.message()));
+      
+    var sum = errors.mapToInt(e -> e.points()).sum();
 
     System.out.println(sum);
   }
